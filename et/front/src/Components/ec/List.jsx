@@ -6,7 +6,7 @@ import Line from './Line';
 
 function List() {
 
-    const { suppliers } = useContext(Consumers);
+    const { consumers } = useContext(Consumers);
 
     return (
         <div className="card m-4">
@@ -14,7 +14,7 @@ function List() {
             <div className="card-body">
                 <ul className="list-group">
                     {
-                        suppliers?.map(s => <Line key={s.id} supplier={s} />)
+                        consumers?.map(c => <Line key={c.id} consumer={c} />)
                     }
                 </ul>
             </div>

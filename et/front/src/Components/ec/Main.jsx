@@ -21,39 +21,46 @@ function Main() {
     // READ for select
     useEffect(() => {
         axios.get('http://localhost:3003/server/suppliers')
-        .then(res => {
-            setSuppliers(res.data);
-        })
+            .then(res => {
+                setSuppliers(res.data);
+            })
     }, []);
+    // READ for list
+    useEffect(() => {
+        axios.get('http://localhost:3003/server/consumers')
+            .then(res => {
+                setConsumers(res.data);
+            })
+    }, [lastUpdate]);
 
     useEffect(() => {
         if (null === createData) {
             return;
         }
         axios.post('http://localhost:3003/server/consumers', createData)
-        .then(res => {
-            setLastUpdate(Date.now());
-        });
+            .then(res => {
+                setLastUpdate(Date.now());
+            });
     }, [createData]);
 
     useEffect(() => {
         if (null === deleteData) {
             return;
         }
-        axios.delete('http://localhost:3003/server/consumers/'+ deleteData.id)
-        .then(res => {
-            setLastUpdate(Date.now());
-        });
+        axios.delete('http://localhost:3003/server/consumers/' + deleteData.id)
+            .then(res => {
+                setLastUpdate(Date.now());
+            });
     }, [deleteData]);
 
     useEffect(() => {
         if (null === editData) {
             return;
         }
-        axios.put('http://localhost:3003/server/consumers/'+ editData.id, editData)
-        .then(res => {
-            setLastUpdate(Date.now());
-        });
+        axios.put('http://localhost:3003/server/consumers/' + editData.id, editData)
+            .then(res => {
+                setLastUpdate(Date.now());
+            });
     }, [editData]);
 
 

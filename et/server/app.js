@@ -53,6 +53,16 @@ app.get("/server/suppliers", (req, res) => {
         res.send(result);
     });
 });
+app.get("/server/consumers", (req, res) => {
+    const sql = `
+    SELECT *
+    FROM electricity_consumers
+    `;
+    con.query(sql, (err, result) => {
+        if (err) throw err;
+        res.send(result);
+    });
+});
 
 //DELETE
 app.delete("/server/suppliers/:id", (req, res) => {

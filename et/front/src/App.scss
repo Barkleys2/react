@@ -4,3 +4,15 @@
     display: block;
     background-color: #0000005f;
 }
+
+.image {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    padding-top: 50px;
+    svg {
+        width: 500px;
+        height: 500px;
+        transition: all 2s;
+    }
+}
