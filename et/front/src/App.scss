@@ -10,9 +10,20 @@
     display: flex;
     justify-content: center;
     padding-top: 50px;
+    align-items: flex-start;
     svg {
-        width: 500px;
-        height: 500px;
+        width: 100px;
+        height: 100px;
         transition: all 2s;
+    }
+}
+
+.home-consumers-list {
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    h4 {
+        margin: 0 5px;
     }
 }

@@ -1,78 +1,68 @@
 import { useState, useEffect } from 'react';
-import Consumers from '../../Contexts/Consumers';
+import Bills from '../../Contexts/Bills';
 import Create from './Create';
 import List from './List';
 import axios from 'axios';
-import Edit from './Edit';
 
 function Main() {
 
     const [lastUpdate, setLastUpdate] = useState(Date.now());
     const [createData, setCreateData] = useState(null);
-    const [consumers, setConsumers] = useState(null);
+    const [bills, setBills] = useState(null);
     const [deleteData, setDeleteData] = useState(null);
-    const [modalData, setModalData] = useState(null);
-    const [editData, setEditData] = useState(null);
 
+    const [consumers, setConsumers] = useState(null);
     const [suppliers, setSuppliers] = useState(null);
 
-
-
-    // READ for select
     useEffect(() => {
+        axios.get('http://localhost:3003/server/bills')
+        .then(res => {
+            setBills(res.data);
+        })
+    }, [lastUpdate]);
+     useEffect(() => {
         axios.get('http://localhost:3003/server/suppliers')
             .then(res => {
                 setSuppliers(res.data);
             })
     }, []);
-    // READ for list
     useEffect(() => {
         axios.get('http://localhost:3003/server/consumers')
             .then(res => {
-                setConsumers(res.data);
+                setConsumers(res.data.map(c => ({...c, show: false})));
             })
-    }, [lastUpdate]);
+    }, []);
+
 
     useEffect(() => {
         if (null === createData) {
             return;
         }
-        axios.post('http://localhost:3003/server/consumers', createData)
-            .then(res => {
-                setLastUpdate(Date.now());
-            });
+        axios.post('http://localhost:3003/server/bills', createData)
+        .then(res => {
+            setLastUpdate(Date.now());
+        });
     }, [createData]);
 
     useEffect(() => {
         if (null === deleteData) {
             return;
         }
-        axios.delete('http://localhost:3003/server/consumers/' + deleteData.id)
-            .then(res => {
-                setLastUpdate(Date.now());
-            });
+        axios.delete('http://localhost:3003/server/bills/'+ deleteData.id)
+        .then(res => {
+            setLastUpdate(Date.now());
+        });
     }, [deleteData]);
-
-    useEffect(() => {
-        if (null === editData) {
-            return;
-        }
-        axios.put('http://localhost:3003/server/consumers/' + editData.id, editData)
-            .then(res => {
-                setLastUpdate(Date.now());
-            });
-    }, [editData]);
 
 
     return (
-        <Consumers.Provider value={{
-            suppliers,
+        <Bills.Provider value={{
             setCreateData,
-            consumers,
+            bills,
             setDeleteData,
-            modalData,
-            setModalData,
-            setEditData
+            consumers,
+            setConsumers,
+            suppliers
         }}>
             <div className="container">
                 <div className="row">
@@ -80,12 +70,11 @@ function Main() {
                         <Create />
                     </div>
                     <div className="col-8">
-                        <List />
+                        {/* <List /> */}
                     </div>
                 </div>
             </div>
-            <Edit />
-        </Consumers.Provider>
+        </Bills.Provider>
     )
 }
 

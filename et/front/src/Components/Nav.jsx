@@ -14,6 +14,7 @@ function Nav() {
                                     <NavLink to="/" end className={ ({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>Home</NavLink>
                                     <NavLink to="/suppliers" className={ ({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>Suppliers</NavLink>
                                     <NavLink to="/consumers" className={ ({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>Consumers</NavLink>
+                                    <NavLink to="/bills" className={ ({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>Bills</NavLink>
                                 </div>
                             </div>
                         </div>
