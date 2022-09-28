@@ -41,6 +41,16 @@ app.post("/server/consumers", (req, res) => {
         res.send(result);
     });
 });
+app.post("/server/bills", (req, res) => {
+    const sql = `
+    INSERT INTO bills (consumer_id, invoice, kwh, total)
+    VALUES (?, ?, ?, ?)
+    `;
+    con.query(sql, [req.body.consumerId, req.body.invoice, req.body.kwh, req.body.total], (err, result) => {
+        if (err) throw err;
+        res.send(result);
+    });
+});
 
 //READ ALL
 app.get("/server/suppliers", (req, res) => {

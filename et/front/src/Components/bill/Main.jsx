@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import Bills from '../../Contexts/Bills';
 import Create from './Create';
-import List from './List';
+// import List from './List';
 import axios from 'axios';
 
 function Main() {
