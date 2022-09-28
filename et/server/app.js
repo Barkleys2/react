@@ -73,12 +73,25 @@ app.get("/server/consumers", (req, res) => {
         res.send(result);
     });
 });
-
 app.get("/server/all", (req, res) => {
     const sql = `
     SELECT title, c.*, s.id AS sid, price
     FROM electricity_suppliers AS s
     INNER JOIN electricity_consumers AS c
+    ON c.supplier_id = s.id
+    `;
+    con.query(sql, (err, result) => {
+        if (err) throw err;
+        res.send(result);
+    });
+});
+app.get("/server/bills", (req, res) => {
+    const sql = `
+    SELECT b.*, name, surname, title, s.id AS sid
+    FROM bills AS b
+    INNER JOIN electricity_consumers AS c
+    ON b.consumer_id = c.id
+    INNER JOIN electricity_suppliers AS s
     ON c.supplier_id = s.id
     `;
     con.query(sql, (err, result) => {
@@ -101,6 +114,16 @@ app.delete("/server/suppliers/:id", (req, res) => {
 app.delete("/server/consumers/:id", (req, res) => {
     const sql = `
     DELETE FROM electricity_consumers
+    WHERE id = ?
+    `;
+    con.query(sql, [req.params.id], (err, result) => {
+        if (err) throw err;
+        res.send(result);
+    });
+});
+app.delete("/server/bills/:id", (req, res) => {
+    const sql = `
+    DELETE FROM bills
     WHERE id = ?
     `;
     con.query(sql, [req.params.id], (err, result) => {

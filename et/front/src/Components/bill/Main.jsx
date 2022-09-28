@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import Bills from '../../Contexts/Bills';
 import Create from './Create';
-// import List from './List';
+import List from './List';
 import axios from 'axios';
 
 function Main() {
@@ -17,7 +17,7 @@ function Main() {
     useEffect(() => {
         axios.get('http://localhost:3003/server/bills')
         .then(res => {
-            setBills(res.data);
+            setBills(res.data.map((c, i) => ({...c, show: true, row: i})));
         })
     }, [lastUpdate]);
      useEffect(() => {
@@ -62,7 +62,8 @@ function Main() {
             setDeleteData,
             consumers,
             setConsumers,
-            suppliers
+            suppliers,
+            setBills
         }}>
             <div className="container">
                 <div className="row">
@@ -70,7 +71,7 @@ function Main() {
                         <Create />
                     </div>
                     <div className="col-8">
-                        {/* <List /> */}
+                        <List />
                     </div>
                 </div>
             </div>
