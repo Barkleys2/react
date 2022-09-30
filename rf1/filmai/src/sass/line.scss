@@ -1,0 +1,27 @@
+.line {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    &__content {
+        display: flex;
+        &__title {
+            font-size: 20px;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        &__info {
+            font-size: 20px;
+            letter-spacing: 1px;
+            margin-right: 10px;
+        }
+    }
+    &__buttons {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        button {
+            margin-left: 5px;
+        }
+    }
+}

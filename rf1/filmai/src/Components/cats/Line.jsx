@@ -1,26 +1,21 @@
 import { useContext } from 'react';
-import Suppliers from '../../Contexts/Suppliers';
+import Cats from '../../Contexts/Cats';
 
+function Line({ cat }) {
 
-function Line({ supplier }) {
-
-    const { setDeleteData, setModalData } = useContext(Suppliers);
+    const { setDeleteData, setModalData } = useContext(Cats);
 
     return (
         <li className="list-group-item">
             <div className="line">
                 <div className="line__content">
                     <div className="line__content__title">
-                        {supplier.title}
+                        {cat.title}
                     </div>
-                    <div className="line__content__info">
-                        {supplier.price} eur/kWh
-                    </div>
-
                 </div>
                 <div className="line__buttons">
-                    <button onClick={() => setModalData(supplier)} type="button" className="btn btn-outline-success">Edit</button>
-                    <button onClick={() => setDeleteData(supplier)} type="button" className="btn btn-outline-danger">Delete</button> 
+                    <button onClick={() => setModalData(cat)} type="button" className="btn btn-outline-success">Edit</button>
+                    <button onClick={() => setDeleteData(cat)} type="button" className="btn btn-outline-danger">Delete</button> 
                 </div>
             </div>
         </li>

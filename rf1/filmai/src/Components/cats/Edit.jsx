@@ -1,34 +1,26 @@
 import { useContext, useEffect, useState } from 'react';
-import Suppliers from '../../Contexts/Suppliers';
-
-
+import Cats from '../../Contexts/Cats';
 
 function Edit() {
 
-    const { modalData, setModalData, setEditData } = useContext(Suppliers);
+    const { modalData, setModalData, setEditData } = useContext(Cats);
     const [title, setTitle] = useState('');
-    const [price, setPrice] = useState('');
-
 
     useEffect(() => {
         if (null === modalData) {
             return;
         }
         setTitle(modalData.title);
-        setPrice(modalData.price);
 
     }, [modalData]);
 
     const save = () => {
         setEditData({
             title,
-            price: parseFloat(price),
             id: modalData.id
         });
         setModalData(null);
     }
-
-
 
     if (null === modalData) {
         return null;
@@ -39,19 +31,15 @@ function Edit() {
             <div className="modal-dialog modal-dialog-centered">
                 <div className="modal-content">
                     <div className="modal-header">
-                        <h5 className="modal-title">Edit Supplier</h5>
+                        <h5 className="modal-title">Edit Cat</h5>
                         <button onClick={() => setModalData(null)} type="button" className="btn-close"></button>
                     </div>
                     <div className="modal-body">
                         <div className="card m-4">
                             <div className="card-body">
                                 <div className="mb-3">
-                                    <label className="form-label">Supplier Title</label>
+                                    <label className="form-label">Cat Title</label>
                                     <input type="text" className="form-control" value={title} onChange={e => setTitle(e.target.value)} />
-                                </div>
-                                <div className="mb-3">
-                                    <label className="form-label">Supplier Price</label>
-                                    <input type="text" className="form-control" value={price} onChange={e => setPrice(e.target.value)} />
                                 </div>
                             </div>
                         </div>
@@ -63,7 +51,7 @@ function Edit() {
                 </div>
             </div>
         </div>
-    )
+    );
 }
 
 export default Edit;

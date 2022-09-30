@@ -19,6 +19,57 @@ const con = mysql.createConnection({
     database: "ruoniu_filmai",
 });
 
+//CREATE
+app.post("/server/cats", (req, res) => {
+    const sql = `
+    INSERT INTO cats (title)
+    VALUES (?)
+    `;
+    con.query(sql, [req.body.title], (err, result) => {
+        if (err) throw err;
+        res.send(result);
+    });
+});
+
+// READ (all)
+app.get("/server/cats", (req, res) => {
+    const sql = `
+    SELECT id, title
+    FROM cats
+    ORDER BY id DESC
+    `;
+    con.query(sql, (err, result) => {
+        if (err) throw err;
+        res.send(result);
+    });
+});
+
+//DELETE
+app.delete("/server/cats/:id", (req, res) => {
+    const sql = `
+    DELETE FROM cats
+    WHERE id = ?
+    `;
+    con.query(sql, [req.params.id], (err, result) => {
+        if (err) throw err;
+        res.send(result);
+    });
+});
+
+//EDIT
+app.put("/server/cats/:id", (req, res) => {
+    const sql = `
+    UPDATE cats
+    SET title = ?
+    WHERE id = ?
+    `;
+    con.query(sql, [req.body.title, req.params.id], (err, result) => {
+        if (err) throw err;
+        res.send(result);
+    });
+});
+
+
 app.listen(port, () => {
     console.log(`Filmus rodo per ${port} portą!`)
 });
