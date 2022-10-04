@@ -7,9 +7,39 @@
 
 .img-bin {
     margin: 10px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    label {
+        margin: 0 10px;
+        cursor: pointer;
+        user-select: none;
+        position: absolute;
+        background-color: black;
+        width: 24px;
+        height: 24px;
+        color: crimson;
+        font-weight: bold;
+        top: 5px;
+        left: -5px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 50%;
+        z-index: 10;
+    }
+    [type=checkbox] {
+        display: none;
+    }
     img {
-        height: 150px;
-        width: auto;
+        height: auto;
+        width: 150px;
+        display: block;
+        position: relative;
+        z-index: 5;
+    }
+    [type=checkbox]:checked~img {
+        opacity: 0.3;
     }
 }
 

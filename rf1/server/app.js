@@ -66,6 +66,19 @@ app.get("/server/movies", (req, res) => {
         res.send(result);
     });
 });
+app.get("/home/movies", (req, res) => {
+    const sql = `
+    SELECT m.*, c.title AS catTitle, c.id AS cid
+    FROM movies AS m
+    INNER JOIN cats AS c
+    ON m.cat_id = c.id
+    ORDER BY m.title
+    `;
+    con.query(sql, (err, result) => {
+        if (err) throw err;
+        res.send(result);
+    });
+});
 
 
 //DELETE
@@ -104,12 +117,31 @@ app.put("/server/cats/:id", (req, res) => {
     });
 });
 app.put("/server/movies/:id", (req, res) => {
-    const sql = `
-    UPDATE movies
-    SET title = ?, price = ?, cat_id = ?
-    WHERE id = ?
-    `;
-    con.query(sql, [req.body.title, req.body.price, req.body.cat_id, req.params.id], (err, result) => {
+    let sql;
+    let r;
+    if (req.body.deletePhoto) {
+        sql = `
+        UPDATE movies
+        SET title = ?, price = ?, cat_id = ?, image = null
+        WHERE id = ?
+        `;
+        r = [req.body.title, req.body.price, req.body.cat_id, req.params.id];
+    } else if (req.body.image) {
+        sql = `
+        UPDATE movies
+        SET title = ?, price = ?, cat_id = ?, image = ?
+        WHERE id = ?
+        `;
+        r = [req.body.title, req.body.price, req.body.cat_id, req.body.image, req.params.id];
+    } else {
+        sql = `
+        UPDATE movies
+        SET title = ?, price = ?, cat_id = ?
+        WHERE id = ?
+        `;
+        r = [req.body.title, req.body.price, req.body.cat_id, req.params.id]
+    }
+    con.query(sql, r, (err, result) => {
         if (err) throw err;
         res.send(result);
     });

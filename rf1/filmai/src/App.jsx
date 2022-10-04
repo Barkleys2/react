@@ -1,7 +1,7 @@
 import './App.scss';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Nav from './Components/Nav';
-import Home from './Components/Home';
+import Home from './Components/home/Main';
 import MainCat from './Components/cats/Main';
 import MainMovies from './Components/movies/Main';
 

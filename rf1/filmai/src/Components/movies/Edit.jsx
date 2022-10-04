@@ -9,6 +9,7 @@ function Edit() {
     const [cat, setCat] = useState(0);
     const fileInput = useRef();
     const [photoPrint, setPhotoPrint] = useState(null);
+    const [deletePhoto, setDeletePhoto] = useState(false);
 
     const doPhoto = () => {
         getBase64(fileInput.current.files[0])
@@ -25,9 +26,12 @@ function Edit() {
             title,
             price: parseFloat(price),
             cat_id: parseInt(cat),
-            id: modalData.id
+            id: modalData.id,
+            deletePhoto: deletePhoto ? 1 : 0,
+            image: photoPrint
         });
         setModalData(null);
+        setDeletePhoto(false);
     }
 
     useEffect(() => {
@@ -38,6 +42,7 @@ function Edit() {
         setPrice(modalData.price);
         setCat(modalData.cat_id);
         setPhotoPrint(modalData.image);
+        setDeletePhoto(false);
     }, [modalData])
 
     if (null === modalData) {
@@ -77,7 +82,11 @@ function Edit() {
                                 <label className="form-label">Movie Image</label>
                                 <input ref={fileInput} type="file" className="form-control" onChange={doPhoto} />
                             </div>
-                            {photoPrint ? <div className='img-bin'><img src={photoPrint} alt="upload"></img></div> : null}
+                            {photoPrint ? <div className='img-bin'>
+                                <label htmlFor="image-delete">X</label>
+                                <input id="image-delete" type="checkbox" checked={deletePhoto} onChange={() => setDeletePhoto(d => !d)}></input>
+                                <img src={photoPrint} alt="upload"></img>
+                            </div> : null}
                             <button onClick={edit} type="button" className="btn btn-outline-success">Save</button>
                         </div>
                     </div>
