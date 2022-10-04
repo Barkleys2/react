@@ -5,7 +5,9 @@ import axios from 'axios';
 
 function Main() {
 
+        const [lastUpdate, setLastUpdate] = useState(Date.now());
         const [movies, setMovies] = useState(null);
+        const [rateData, setRateData] = useState(null);
 
 
         // READ for list
@@ -14,11 +16,23 @@ function Main() {
                 .then(res => {
                     setMovies(res.data);
                 })
-        }, []);
+        }, [lastUpdate]);
+
+
+        useEffect(() => {
+            if (null === rateData) {
+                return;
+            }
+            axios.put('http://localhost:3003/home/movies/' + rateData.id, rateData)
+            .then(res => {
+                setLastUpdate(Date.now());
+            });
+        }, [rateData]);
 
       return (
         <Home.Provider value={{
-            movies
+            movies,
+            setRateData
         }}>
         <div className="container">
             <div className="row">

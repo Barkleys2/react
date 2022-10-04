@@ -1,32 +1,52 @@
-// import { useContext } from 'react';
-// import Home from '../../Contexts/Home';
+import { useContext } from 'react';
+import Home from '../../Contexts/Home';
+
+import { useState } from "react";
 
 function Line({ movie }) {
 
-    // const { cats } = useContext(Home);
+    const { setRateData } = useContext(Home);
+
+    const [rate, setRate] = useState(5);
+
+    const doRating = () => {
+        setRateData({
+            id: movie.id,
+            rate
+        });
+        setRate(5);
+    }
 
     return (
         <li className="list-group-item">
-            <div className="line">
-                <div className="line__content">
-                    <div className="line__content__info">
+            <div className="home">
+                <div className="home__content">
+                    <div className="home__content__info">
+                        <h2>{movie.title}</h2>
                         {movie.image ? <div className='img-bin'>
                             <img src={movie.image} alt={movie.title}>
                             </img>
-                        </div> : <span className="red-image">No image</span>}
+                        </div> : null}
                     </div>
-                    <div className="line__content__title">
-                        {movie.title}
+                    <div className="home__content__price">
+                        {movie.price} Eur
                     </div>
-                    <div className="line__content__info">
-                        {movie.price}
+
+                    <div className="home__content__cat">
+                        {movie.catTitle}
                     </div>
-                    <div className="line__content__info">
+
+                    <div className="home__content__info">
                         {movie.rating ?? 'no rating'}
+                        <select value={rate} onChange={e => setRate(e.target.value)}>
+                            {
+                                [...Array(10)].map((_, i) => <option key={i + 1} value={i + 1}>{i + 1}</option>)
+                            }
+                        </select>
                     </div>
-                    <div className="line__content__info">
-                        {/* {cats.find(c => c.id === movie.cat_id)?.title} */}
-                    </div>
+                    <div className="home__buttons">
+                    <button onClick={doRating} type="button" className="btn btn-outline-success">Rate</button>
+                </div>
                 </div>
             </div>
         </li>

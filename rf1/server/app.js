@@ -116,6 +116,20 @@ app.put("/server/cats/:id", (req, res) => {
         res.send(result);
     });
 });
+app.put("/home/movies/:id", (req, res) => {
+    const sql = `
+    UPDATE movies
+    SET 
+    rating_sum = rating_sum + ?, 
+    rating_count = rating_count + 1, 
+    rating = rating_sum / rating_count
+    WHERE id = ?
+    `;
+    con.query(sql, [req.body.rate, req.params.id], (err, result) => {
+        if (err) throw err;
+        res.send(result);
+    });
+});
 app.put("/server/movies/:id", (req, res) => {
     let sql;
     let r;

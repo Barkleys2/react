@@ -4,7 +4,7 @@ import Line from './Line';
 
 function List() {
 
-    const { movie } = useContext(Home);
+    const { movies } = useContext(Home);
 
     return (
         <div className="card m-4">
@@ -12,7 +12,7 @@ function List() {
             <div className="card-body">
                 <ul className="list-group">
                     {
-                        movie?.map(m => <Line key={m.id} movie={m} />)
+                        movies?.map(m => <Line key={m.id} movie={m} />)
                     }
                 </ul>
             </div>
