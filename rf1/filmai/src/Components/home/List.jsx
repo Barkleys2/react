@@ -17,12 +17,20 @@ function List() {
     const { movies, setMovies, filterOn, filterWhat } = useContext(Home);
 
     const [sortBy, setSortBy] = useState('default');
+    const [stats, setStats] = useState({movieCount: null});
 
     const resetFilter = () => {
         setMovies(m => m.map(mo => ({ ...mo, show: true })));
         filterOn.current = false;
         filterWhat.current = null;
     }
+
+    useEffect(() => {
+        if (null === movies) {
+            return;
+        }
+        setStats(s => ({...s, movieCount: movies.length}));
+    }, [movies]);
 
     useEffect(() => {
         switch (sortBy) {
@@ -32,9 +40,17 @@ function List() {
             case 'price_desc':
                 setMovies(m => [...m].sort((b, a) => a.price - b.price));
                 break;
+            case 'rate_asc':
+                setMovies(m => [...m].sort((x, c) => x.rating - c.rating));
+                break;
+            case 'rate_desc':
+                setMovies(m => [...m].sort((jo, no) => no.rating - jo.rating));
+                break;
+            default:
+                setMovies(m => [...m ?? []].sort((a, b) => a.row - b.row));
         }
 
-    }, [sortBy]);
+    }, [sortBy, setMovies]);
 
     return (
         <>
@@ -52,7 +68,7 @@ function List() {
                 </div>
             </div>
             <div className="card m-4">
-                <h5 className="card-header">Movies List <small onClick={resetFilter}>show all cats</small></h5>
+                <h5 className="card-header">Movies List ({stats.movieCount}) <small onClick={resetFilter}>show all cats</small></h5>
                 <div className="card-body">
                     <ul className="list-group">
                         {
