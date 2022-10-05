@@ -14,7 +14,7 @@ function Main() {
         useEffect(() => {
             axios.get('http://localhost:3003/home/movies')
                 .then(res => {
-                    setMovies(res.data);
+                    setMovies(res.data.map((d, i) => ({...d, show: true, row: i})));
                 })
         }, [lastUpdate]);
 
@@ -32,7 +32,8 @@ function Main() {
       return (
         <Home.Provider value={{
             movies,
-            setRateData
+            setRateData,
+            setMovies
         }}>
         <div className="container">
             <div className="row">

@@ -5,7 +5,7 @@ import { useState } from "react";
 
 function Line({ movie }) {
 
-    const { setRateData } = useContext(Home);
+    const { setRateData, setMovies } = useContext(Home);
 
     const [rate, setRate] = useState(5);
 
@@ -15,6 +15,10 @@ function Line({ movie }) {
             rate
         });
         setRate(5);
+    }
+
+    const filter = () => {
+        setMovies(m => m.map(mo => mo.cat_id === movie.cat_id ? {...mo, show: true} : {...mo, show: false}));
     }
 
     return (
@@ -32,7 +36,7 @@ function Line({ movie }) {
                         {movie.price} Eur
                     </div>
 
-                    <div className="home__content__cat">
+                    <div className="home__content__cat click-link" onClick={filter}>
                         {movie.catTitle}
                     </div>
 
