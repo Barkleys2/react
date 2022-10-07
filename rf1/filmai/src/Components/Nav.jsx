@@ -1,6 +1,6 @@
 import { NavLink } from "react-router-dom";
 
-function Nav() {
+function Nav({status}) {
 
     return (
         <div className="container">
@@ -14,6 +14,7 @@ function Nav() {
                                     <NavLink to="/" end className={ ({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>Home</NavLink>
                                     <NavLink to="/categories" className={ ({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>Categories</NavLink>
                                     <NavLink to="/movies" className={ ({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>Movies</NavLink>
+                                    {status !== 1 ? <NavLink to="/logout" className="nav-link">Logout</NavLink> : null}
                                 </div>
                             </div>
                         </div>

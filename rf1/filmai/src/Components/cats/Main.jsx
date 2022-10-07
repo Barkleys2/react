@@ -4,6 +4,7 @@ import Create from './Create';
 import List from './List';
 import axios from 'axios';
 import Edit from './Edit';
+import { authConfig } from '../../Functions/auth';
 
 function Main() {
 
@@ -15,7 +16,7 @@ function Main() {
     const [editData, setEditData] = useState(null);
 
     useEffect(() => {
-        axios.get('http://localhost:3003/server/cats')
+        axios.get('http://localhost:3003/server/cats', authConfig())
         .then(res => {
             setCats(res.data);
         })
@@ -25,7 +26,7 @@ function Main() {
         if (null === createData) {
             return;
         }
-        axios.post('http://localhost:3003/server/cats', createData)
+        axios.post('http://localhost:3003/server/cats', createData, authConfig())
         .then(res => {
             setLastUpdate(Date.now());
         });
@@ -35,7 +36,7 @@ function Main() {
         if (null === deleteData) {
             return;
         }
-        axios.delete('http://localhost:3003/server/cats/'+ deleteData.id)
+        axios.delete('http://localhost:3003/server/cats/'+ deleteData.id, authConfig())
         .then(res => {
             setLastUpdate(Date.now());
         });
@@ -45,7 +46,7 @@ function Main() {
         if (null === editData) {
             return;
         }
-        axios.put('http://localhost:3003/server/cats/'+ editData.id, editData)
+        axios.put('http://localhost:3003/server/cats/'+ editData.id, editData, authConfig())
         .then(res => {
             setLastUpdate(Date.now());
         });
