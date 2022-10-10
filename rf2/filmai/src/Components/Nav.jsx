@@ -11,9 +11,8 @@ function Nav({status}) {
                             <span className="navbar-brand">Movies</span>
                             <div className="collapse navbar-collapse">
                                 <div className="navbar-nav">
-                                    <NavLink to="/" end className={ ({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>Home</NavLink>
-                                    <NavLink to="/categories" className={ ({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>Categories</NavLink>
-                                    <NavLink to="/movies" className={ ({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>Movies</NavLink>
+                                    {status === 2 || status === 3 || status === 4 ? <NavLink to="/" end className={ ({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>Home</NavLink> : null}
+                                    {status === 3 ? <NavLink to="/movies" className={ ({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>Movies</NavLink> : null}
                                     {status !== 1 ? <NavLink to="/logout" className="nav-link">Logout</NavLink> : null}
                                 </div>
                             </div>

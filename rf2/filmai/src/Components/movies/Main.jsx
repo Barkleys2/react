@@ -4,6 +4,7 @@ import Create from './Create';
 import List from './List';
 import axios from 'axios';
 import Edit from './Edit';
+import { authConfig } from '../../Functions/auth';
 
 function Main() {
 
@@ -14,20 +15,9 @@ function Main() {
     const [modalData, setModalData] = useState(null);
     const [editData, setEditData] = useState(null);
 
-    const [cats, setCats] = useState(null);
-
-
-
-    // READ for select
-    useEffect(() => {
-        axios.get('http://localhost:3003/server/cats')
-            .then(res => {
-                setCats(res.data);
-            })
-    }, []);
     // READ for list
     useEffect(() => {
-        axios.get('http://localhost:3003/server/movies')
+        axios.get('http://localhost:3003/server/movies', authConfig())
             .then(res => {
                 setMovies(res.data);
             })
@@ -37,7 +27,7 @@ function Main() {
         if (null === createData) {
             return;
         }
-        axios.post('http://localhost:3003/server/movies', createData)
+        axios.post('http://localhost:3003/server/movies', createData, authConfig())
             .then(res => {
                 setLastUpdate(Date.now());
             });
@@ -47,7 +37,7 @@ function Main() {
         if (null === deleteData) {
             return;
         }
-        axios.delete('http://localhost:3003/server/movies/' + deleteData.id)
+        axios.delete('http://localhost:3003/server/movies/' + deleteData.id, authConfig())
             .then(res => {
                 setLastUpdate(Date.now());
             });
@@ -57,7 +47,7 @@ function Main() {
         if (null === editData) {
             return;
         }
-        axios.put('http://localhost:3003/server/movies/' + editData.id, editData)
+        axios.put('http://localhost:3003/server/movies/' + editData.id, editData, authConfig())
             .then(res => {
                 setLastUpdate(Date.now());
             });
@@ -66,7 +56,6 @@ function Main() {
 
     return (
         <Movies.Provider value={{
-            cats,
             setCreateData,
             movies,
             setDeleteData,

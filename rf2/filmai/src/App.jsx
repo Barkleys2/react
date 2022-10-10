@@ -2,21 +2,23 @@ import './App.scss';
 import { BrowserRouter, Route, Routes, Navigate, useNavigate } from 'react-router-dom';
 import Nav from './Components/Nav';
 import Home from './Components/home/Main';
-import MainCat from './Components/cats/Main';
+// import MainCat from './Components/cats/Main';
 import MainMovies from './Components/movies/Main';
 import { login, logout, authConfig } from './Functions/auth';
 import { useState, useEffect } from "react";
 import axios from 'axios';
 
 function App() {
+
+  const [roleChange, setRoleChange] = useState(Date.now());
+
   return (
     <BrowserRouter>
-      <ShowNav/>
+      <ShowNav roleChange={roleChange}/>
       <Routes>
         <Route path="/" element={<RequireAuth role="user"><Home /></RequireAuth>}></Route>
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/logout" element={<LogoutPage />} />
-        <Route path="/categories" element={<RequireAuth role="admin"><MainCat /></RequireAuth>}></Route>
+        <Route path="/login" element={<LoginPage setRoleChange={setRoleChange} />} />
+        <Route path="/logout" element={<LogoutPage setRoleChange={setRoleChange} />} />
         <Route path="/movies" element={<RequireAuth role="admin"><MainMovies /></RequireAuth>}></Route>
       </Routes>
     </BrowserRouter>
@@ -24,14 +26,14 @@ function App() {
 }
 
 
-function ShowNav() {
+function ShowNav({roleChange}) {
   const [status, setStatus] = useState(1);
   useEffect(() => {
     axios.get('http://localhost:3003/login-check?role=admin', authConfig())
       .then(res => {
         setStatus(res.data.status);
       })
-  }, []);
+  }, [roleChange]);
   return <Nav status={status} />
 }
 
@@ -58,7 +60,7 @@ function RequireAuth({ children, role }) {
 }
 
 
-function LoginPage() {
+function LoginPage({setRoleChange}) {
   const navigate = useNavigate();
 
   const [user, setUser] = useState('');
@@ -67,7 +69,7 @@ function LoginPage() {
   const doLogin = () => {
     axios.post('http://localhost:3003/login', { user, pass })
       .then(res => {
-        console.log(res.data);
+        setRoleChange(Date.now());
         if ('ok' === res.data.msg) {
           login(res.data.key);
           navigate('/', { replace: true });
@@ -83,8 +85,12 @@ function LoginPage() {
   );
 }
 
-function LogoutPage() {
-  useEffect(() => logout(), []);
+function LogoutPage({setRoleChange}) {
+  useEffect(() => {
+    logout();
+    setRoleChange(Date.now());
+  }, [setRoleChange]);
+  
   return (
     <Navigate to="/login" replace />
   )
