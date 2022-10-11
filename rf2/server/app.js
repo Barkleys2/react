@@ -153,6 +153,19 @@ app.get("/home/movies", (req, res) => {
     const sql = `
     SELECT m.*, c.id AS cid, c.post
     FROM movies AS m
+    LEFT JOIN comments AS c
+    ON c.movie_id = m.id
+    ORDER BY m.title
+    `;
+    con.query(sql, (err, result) => {
+        if (err) throw err;
+        res.send(result);
+    });
+});
+app.get("/server/movies/wc", (req, res) => {
+    const sql = `
+    SELECT m.*, c.id AS cid, c.post
+    FROM movies AS m
     INNER JOIN comments AS c
     ON c.movie_id = m.id
     ORDER BY m.title
@@ -169,6 +182,16 @@ app.get("/home/movies", (req, res) => {
 app.delete("/server/movies/:id", (req, res) => {
     const sql = `
     DELETE FROM movies
+    WHERE id = ?
+    `;
+    con.query(sql, [req.params.id], (err, result) => {
+        if (err) throw err;
+        res.send(result);
+    });
+});
+app.delete("/server/comments/:id", (req, res) => {
+    const sql = `
+    DELETE FROM comments
     WHERE id = ?
     `;
     con.query(sql, [req.params.id], (err, result) => {
