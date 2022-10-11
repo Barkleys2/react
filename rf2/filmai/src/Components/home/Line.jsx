@@ -30,6 +30,7 @@ function Line({ movie }) {
         <li className="list-group-item">
             <div className="home">
                 <div className="home__content">
+
                     <div className="home__content__info">
                         <h2>{movie[0]}</h2>
                         {movie[1][0].image ? <div className='img-bin'>
@@ -37,20 +38,19 @@ function Line({ movie }) {
                             </img>
                         </div> : null}
                     </div>
+
                     <div className="home__content__price">
                         {movie[1][0].price} Eur
                     </div>
 
                     <div className="home__content__info">
-                        {movie[1][0].rating ?? 'no rating'}
+                        <h2>{movie[1][0].rating ?? 'no rating'}</h2>
                         <select value={rate} onChange={e => setRate(e.target.value)}>
                             {
                                 [...Array(10)].map((_, i) => <option key={i + 1} value={i + 1}>{i + 1}</option>)
                             }
                         </select>
-                    </div>
-                    <div className="home__buttons">
-                        <button onClick={doRating} type="button" className="btn btn-outline-success">Rate</button>
+                        <button onClick={doRating} type="button" className="btn btn-outline-success m-3">Rate</button>
                     </div>
                 </div>
             </div>

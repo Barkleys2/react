@@ -77,5 +77,4 @@ function Main() {
         </Movies.Provider>
     )
 }
-
 export default Main;
