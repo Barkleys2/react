@@ -13,7 +13,7 @@ function Create() {
 
     const add = () => {
         if (pass !== pass2) {
-            setError('Bad boy');
+            setError('Password do not mach');
             return;
         }
 
