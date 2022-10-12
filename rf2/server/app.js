@@ -126,6 +126,7 @@ app.post("/register", (req, res) => {
 
 ///////////////////END////////////////////
 
+
 //CREATE
 app.post("/server/movies", (req, res) => {
     const sql = `
@@ -134,7 +135,7 @@ app.post("/server/movies", (req, res) => {
     `;
     con.query(sql, [req.body.title, req.body.price, req.body.image], (err, result) => {
         if (err) throw err;
-        res.send(result);
+        res.send({ msg: 'OK', text: 'New movie was added.', type: 'success' });
     });
 });
 app.post("/home/comments/:id", (req, res) => {
@@ -197,7 +198,7 @@ app.delete("/server/movies/:id", (req, res) => {
     `;
     con.query(sql, [req.params.id], (err, result) => {
         if (err) throw err;
-        res.send(result);
+        res.send({ msg: 'OK', text: 'The movie was deleted.', type: 'info' });
     });
 });
 app.delete("/server/comments/:id", (req, res) => {
@@ -389,4 +390,3 @@ app.listen(port, () => {
 //         if (err) throw err;
 //         res.send(result);
 //     });
-// });

@@ -1,10 +1,12 @@
 import { useState, useEffect } from 'react';
 import Movies from '../../Contexts/Movies';
+import DataContext from '../../Contexts/DataContext';
 import Create from './Create';
 import List from './List';
 import axios from 'axios';
 import Edit from './Edit';
 import { authConfig } from '../../Functions/auth';
+import { useContext } from 'react';
 
 function Main() {
 
@@ -14,6 +16,7 @@ function Main() {
     const [deleteData, setDeleteData] = useState(null);
     const [modalData, setModalData] = useState(null);
     const [editData, setEditData] = useState(null);
+    const { makeMsg } = useContext(DataContext);
 
     // READ for list
     useEffect(() => {
@@ -30,8 +33,9 @@ function Main() {
         axios.post('http://localhost:3003/server/movies', createData, authConfig())
             .then(res => {
                 setLastUpdate(Date.now());
+                makeMsg(res.data.text, res.data.type);
             });
-    }, [createData]);
+    }, [createData, makeMsg]);
 
     useEffect(() => {
         if (null === deleteData) {
@@ -40,8 +44,9 @@ function Main() {
         axios.delete('http://localhost:3003/server/movies/' + deleteData.id, authConfig())
             .then(res => {
                 setLastUpdate(Date.now());
+                makeMsg(res.data.text, res.data.type);
             });
-    }, [deleteData]);
+    }, [deleteData, makeMsg]);
 
     useEffect(() => {
         if (null === editData) {

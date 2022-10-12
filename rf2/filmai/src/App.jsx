@@ -6,25 +6,59 @@ import MainComments from './Components/comment/Main';
 import MainMovies from './Components/movies/Main';
 import RegisterPage from './Components/register/Main';
 import { login, logout, authConfig } from './Functions/auth';
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import axios from 'axios';
+import { v4 as uuidv4 } from 'uuid';
+import DataContext from './Contexts/DataContext';
+import Messages from './Components/Messages';
 
 function App() {
 
   const [roleChange, setRoleChange] = useState(Date.now());
+  const [msgs, setMsgs] = useState([]);
+
+
+  const makeMsg = useCallback((text, type = '') => {
+    let msgTypeClass;
+    switch (type) {
+      case 'success': msgTypeClass = 'ok';
+        break;
+      case 'error': msgTypeClass = 'error';
+        break;
+      case 'info': msgTypeClass = 'info';
+        break;
+      default: msgTypeClass = 'default';
+    }
+    const msg = {
+      id: uuidv4(),
+      text,
+      class: msgTypeClass
+    }
+    setMsgs(m => [...m, msg]);
+    setTimeout(() => {
+      setMsgs(m => m.filter(mes => mes.id !== msg.id));
+    }, 6000);
+  }, []);
 
   return (
-    <BrowserRouter>
-      <ShowNav roleChange={roleChange} />
-      <Routes>
-        <Route path="/" element={<RequireAuth role="user"><Home /></RequireAuth>}></Route>
-        <Route path="/login" element={<LoginPage setRoleChange={setRoleChange} />} />
-        <Route path="/logout" element={<LogoutPage setRoleChange={setRoleChange} />} />
-        <Route path="/movies" element={<RequireAuth role="admin"><MainMovies /></RequireAuth>}></Route>
-        <Route path="/comments" element={<RequireAuth role="admin"><MainComments /></RequireAuth>}></Route>
-        <Route path="/register" element={<RegisterPage setRoleChange={setRoleChange} />} />
-      </Routes>
-    </BrowserRouter>
+    <DataContext.Provider value={{
+      msgs,
+      setMsgs,
+      makeMsg
+    }}>
+      <BrowserRouter>
+        <ShowNav roleChange={roleChange} />
+        <Messages />
+        <Routes>
+          <Route path="/" element={<RequireAuth role="user"><Home /></RequireAuth>}></Route>
+          <Route path="/login" element={<LoginPage setRoleChange={setRoleChange} />} />
+          <Route path="/logout" element={<LogoutPage setRoleChange={setRoleChange} />} />
+          <Route path="/movies" element={<RequireAuth role="admin"><MainMovies /></RequireAuth>}></Route>
+          <Route path="/comments" element={<RequireAuth role="admin"><MainComments /></RequireAuth>}></Route>
+          <Route path="/register" element={<RegisterPage setRoleChange={setRoleChange} />} />
+        </Routes>
+      </BrowserRouter>
+    </DataContext.Provider>
   );
 }
 
@@ -84,7 +118,7 @@ function LoginPage({ setRoleChange }) {
 
     <div className="container">
       <div className="row justify-content-center">
-        <div className="col-4">
+        <div className="col col-lg-4 col-md-12">
           <div className="card m-4">
             <h5 className="card-header">Login</h5>
             <div className="card-body">
