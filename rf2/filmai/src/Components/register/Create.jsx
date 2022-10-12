@@ -9,8 +9,14 @@ function Create() {
     const [pass2, setPass2] = useState('');
 
     const { setCreateUser } = useContext(Register);
+    const [error, setError] = useState('')
 
     const add = () => {
+        if (pass !== pass2) {
+            setError('Bad boy');
+            return;
+        }
+
         setCreateUser({
             name,
             pass
@@ -22,7 +28,7 @@ function Create() {
 
     return (
         <div className="card m-4">
-            <h5 className="card-header">Register</h5>
+            <h5 className="card-header">Register <i>{error}</i></h5>
             <div className="card-body">
                 <div className="mb-3">
                     <label className="form-label">Name</label>
@@ -30,11 +36,11 @@ function Create() {
                 </div>
                 <div className="mb-3">
                     <label className="form-label">Password</label>
-                    <input type="password" className="form-control" value={pass} onChange={e => setPass(e.target.value)} />
+                    <input style={{borderColor: error ? 'crimson' : null}} type="password" className="form-control" value={pass} onChange={e => setPass(e.target.value)} />
                 </div>
                 <div className="mb-3">
-                    <label className="form-label">Repeat Password</label>
-                    <input type="password" className="form-control" value={pass2} onChange={e => setPass2(e.target.value)} />
+                    <label className="form-label">Password 2</label>
+                    <input style={{borderColor: error ? 'crimson' : null}} type="password" className="form-control" value={pass2} onChange={e => setPass2(e.target.value)} />
                 </div>
                 <button onClick={add} type="button" className="btn btn-outline-success">Register</button>
             </div>
