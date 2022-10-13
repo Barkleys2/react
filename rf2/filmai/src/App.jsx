@@ -6,11 +6,12 @@ import MainComments from './Components/comment/Main';
 import MainMovies from './Components/movies/Main';
 import RegisterPage from './Components/register/Main';
 import { login, logout, authConfig } from './Functions/auth';
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useContext } from 'react';
 import axios from 'axios';
 import { v4 as uuidv4 } from 'uuid';
 import DataContext from './Contexts/DataContext';
 import Messages from './Components/Messages';
+
 
 function App() {
 
@@ -99,7 +100,7 @@ function RequireAuth({ children, role }) {
 
 function LoginPage({ setRoleChange }) {
   const navigate = useNavigate();
-
+  const { makeMsg } = useContext(DataContext);
   const [user, setUser] = useState('');
   const [pass, setPass] = useState('');
 
@@ -110,7 +111,11 @@ function LoginPage({ setRoleChange }) {
         if ('ok' === res.data.msg) {
           login(res.data.key);
           navigate('/', { replace: true });
+          makeMsg(res.data.text, res.data.type);
         }
+      })
+      .catch(() => {
+        makeMsg('You are not from here.', 'error');
       })
   }
   return (
@@ -141,10 +146,12 @@ function LoginPage({ setRoleChange }) {
 }
 
 function LogoutPage({ setRoleChange }) {
+  const { makeMsg } = useContext(DataContext);
   useEffect(() => {
     logout();
     setRoleChange(Date.now());
-  }, [setRoleChange]);
+    makeMsg('Bye, bye, see you next time.', 'info');
+  }, [setRoleChange, makeMsg]);
 
   return (
     <Navigate to="/login" replace />

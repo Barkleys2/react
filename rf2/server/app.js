@@ -106,21 +106,22 @@ app.post("/login", (req, res) => {
     con.query(sql, [key, req.body.user, md5(req.body.pass)], (err, result) => {
         if (err) throw err;
         if (!result.affectedRows) {
-            res.send({ msg: 'error', key: '' });
+            res.status(401).send({ msg: 'error', key: '' });
         } else {
-            res.send({ msg: 'ok', key });
+            res.send({ msg: 'ok', key, text: 'Good to see you ' + req.body.user + ' again.', type: 'info' });
         }
     });
 });
 
 app.post("/register", (req, res) => {
+    const key = uuid.v4();
     const sql = `
-    INSERT INTO users (name, psw)
-    VALUES (?, ?)
+    INSERT INTO users (name, psw, session)
+    VALUES (?, ?, ?)
   `;
-    con.query(sql, [req.body.name, md5(req.body.pass)], (err, result) => {
+    con.query(sql, [req.body.name, md5(req.body.pass), key], (err, result) => {
         if (err) throw err;
-        res.send(result);
+        res.send({ msg: 'ok', key, text: 'Welcome!', type: 'info' });
     });
 });
 
@@ -145,7 +146,7 @@ app.post("/home/comments/:id", (req, res) => {
     `;
     con.query(sql, [req.body.post, req.params.id], (err, result) => {
         if (err) throw err;
-        res.send(result);
+        res.send({ msg: 'OK', text: 'Thanks, for commenting.', type: 'info' });
     });
 });
 
@@ -208,7 +209,7 @@ app.delete("/server/comments/:id", (req, res) => {
     `;
     con.query(sql, [req.params.id], (err, result) => {
         if (err) throw err;
-        res.send(result);
+        res.send({ msg: 'OK', text: 'Bad comment was deleted.', type: 'info' });
     });
 });
 
@@ -225,7 +226,7 @@ app.put("/home/movies/:id", (req, res) => {
     `;
     con.query(sql, [req.body.rate, req.params.id], (err, result) => {
         if (err) throw err;
-        res.send(result);
+        res.send({ msg: 'OK', text: 'Thanks, for your vote.', type: 'info' });
     });
 });
 app.put("/server/movies/:id", (req, res) => {
@@ -255,7 +256,7 @@ app.put("/server/movies/:id", (req, res) => {
     }
     con.query(sql, r, (err, result) => {
         if (err) throw err;
-        res.send(result);
+        res.send({ msg: 'OK', text: 'The movie was edited.', type: 'success' });
     });
 });
 
@@ -390,3 +391,4 @@ app.listen(port, () => {
 //         if (err) throw err;
 //         res.send(result);
 //     });
+// });
